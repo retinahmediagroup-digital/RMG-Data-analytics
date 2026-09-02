@@ -5,6 +5,7 @@ interface PasswordGateProps {
   storageKey: string;
   title: string;
   description?: string;
+  logo?: string;
   children: ReactNode;
 }
 
@@ -21,6 +22,7 @@ export function PasswordGate({
   storageKey,
   title,
   description = "Enter the access code to continue.",
+  logo,
   children,
 }: PasswordGateProps) {
   const [unlocked, setUnlocked] = useState(false);
@@ -50,6 +52,7 @@ export function PasswordGate({
   return (
     <div className="gate-wrap">
       <form className="gate-card" onSubmit={submit}>
+        {logo && <img src={logo} alt="" className="gate-logo" />}
         <h1>{title}</h1>
         <p>{description}</p>
         <input
