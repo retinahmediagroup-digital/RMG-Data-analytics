@@ -36,7 +36,7 @@ header {
 }
 
 .eyebrow {
-  font-size: 13px;
+  font-size: 15.5px;
   font-weight: 600;
   margin: 0 0 2px;
 }
@@ -44,14 +44,14 @@ header {
 h1 {
   font-family: "Fraunces", serif;
   font-weight: 500;
-  font-size: clamp(24px, 3.4vw, 32px);
+  font-size: clamp(27px, 3.6vw, 35px);
   margin: 0;
   letter-spacing: -0.01em;
 }
 
 .sub {
   color: var(--slate);
-  font-size: 14.5px;
+  font-size: 17px;
   margin: 8px 0 0;
   line-height: 1.55;
 }
@@ -61,7 +61,7 @@ footer {
   padding-top: 16px;
   border-top: 1px solid var(--line);
   color: var(--slate);
-  font-size: 12px;
+  font-size: 14.5px;
 }
 
 .stattile {
@@ -98,12 +98,12 @@ footer {
   gap: 8px;
 }
 .stattile .lbl {
-  font-size: 12px;
+  font-size: 14.5px;
   color: var(--slate);
 }
 .stattile .num {
   font-family: "Fraunces", serif;
-  font-size: 26px;
+  font-size: 28.5px;
   font-weight: 500;
   margin-top: 2px;
 }
@@ -121,7 +121,7 @@ footer {
 .stattile-gold .stattile-spark polyline { stroke: var(--gold-dark); opacity: 0.9; }
 .stattile-purple .stattile-spark polyline { stroke: var(--purple); opacity: 0.9; }
 .stattile-delta {
-  font-size: 11.5px;
+  font-size: 14px;
   font-weight: 600;
   margin-top: 4px;
 }
@@ -129,7 +129,7 @@ footer {
 .stattile-delta-down { color: var(--error); }
 .stattile-delta-flat { color: var(--slate); }
 .stattile-note {
-  font-size: 11px;
+  font-size: 13.5px;
   color: var(--slate);
   margin-top: 6px;
   line-height: 1.4;
@@ -155,7 +155,7 @@ footer {
 .heatmap-rowproduct {
   font-weight: 400;
   color: var(--slate);
-  font-size: 10.5px;
+  font-size: 13px;
 }
 /* Explicit resets on every property this app's generic table/th/td selectors
    also set (background, border, text-align, padding) - this table must not
@@ -164,7 +164,7 @@ footer {
   background: none;
   border: none;
   font-weight: 600;
-  font-size: 11px;
+  font-size: 13.5px;
   color: var(--slate);
   padding: 4px 6px;
   text-align: center;
@@ -183,7 +183,7 @@ footer {
   min-width: 44px;
   padding: 8px 6px;
   text-align: center;
-  font-size: 12px;
+  font-size: 14.5px;
   font-variant-numeric: tabular-nums;
   border-radius: 4px;
   cursor: pointer;
@@ -233,7 +233,7 @@ footer {
   align-items: center;
   gap: 8px;
   margin-top: 10px;
-  font-size: 11px;
+  font-size: 13.5px;
   color: var(--slate);
 }
 .heatmap-scale-bar {
@@ -250,7 +250,7 @@ footer {
   color: #fff;
   padding: 7px 10px;
   border-radius: 7px;
-  font-size: 12px;
+  font-size: 14.5px;
   line-height: 1.4;
   pointer-events: none;
   display: flex;
@@ -258,11 +258,11 @@ footer {
   box-shadow: 0 4px 14px rgba(11, 11, 11, 0.25);
 }
 .heatmap-tooltip strong {
-  font-size: 13px;
+  font-size: 15.5px;
 }
 .heatmap-tooltip span {
   color: #d8dfdc;
-  font-size: 11px;
+  font-size: 13.5px;
 }
 
 .gate-wrap {

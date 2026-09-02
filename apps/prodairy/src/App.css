@@ -13,7 +13,7 @@
   border: 1px solid #cfe4de;
   border-radius: 9px;
   padding: 12px 16px;
-  font-size: 13px;
+  font-size: 15.5px;
   color: var(--teal-dark);
   margin: 22px 0;
   line-height: 1.5;
@@ -38,11 +38,11 @@
 }
 .kpi .num {
   font-family: "Fraunces", serif;
-  font-size: 26px;
+  font-size: 28.5px;
   font-weight: 500;
 }
 .kpi .lbl {
-  font-size: 12px;
+  font-size: 14.5px;
   color: var(--slate);
   margin-top: 2px;
 }
@@ -70,11 +70,11 @@
 .chartcard h3 {
   font-family: "Fraunces", serif;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 18.5px;
   margin: 0 0 4px;
 }
 .chartcard .cap {
-  font-size: 12px;
+  font-size: 14.5px;
   color: var(--slate);
   margin: 0 0 14px;
 }
@@ -84,7 +84,7 @@
 
 .section-title {
   font-family: "Fraunces", serif;
-  font-size: 18px;
+  font-size: 20.5px;
   font-weight: 500;
   margin: 0 0 14px;
   display: flex;
@@ -99,7 +99,7 @@
   color: var(--teal-dark);
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: 13px;
+  font-size: 15.5px;
   cursor: pointer;
 }
 .exportbtn:hover {
@@ -125,7 +125,7 @@
 }
 .shopcard-product {
   margin: -8px 0 12px;
-  font-size: 11.5px;
+  font-size: 14px;
   color: var(--slate);
 }
 
@@ -133,7 +133,7 @@
   padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 15.5px;
   font-family: "Inter", sans-serif;
   color: var(--ink);
   background: #fff;
@@ -158,7 +158,7 @@
   padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: 20px;
-  font-size: 13px;
+  font-size: 15.5px;
   font-family: "Inter", sans-serif;
   color: var(--ink);
   background: #fff;
@@ -175,7 +175,7 @@
   color: var(--slate);
   font-family: "Inter", sans-serif;
   font-weight: 600;
-  font-size: 12.5px;
+  font-size: 15px;
   padding: 7px 14px;
   border-radius: 20px;
   cursor: pointer;
@@ -190,20 +190,20 @@
   color: #fff;
 }
 .filter-count {
-  font-size: 12px;
+  font-size: 14.5px;
   color: var(--slate);
   margin-left: auto;
 }
 .shopcard h3 {
   font-family: "Fraunces", serif;
   font-weight: 500;
-  font-size: 16px;
+  font-size: 18.5px;
   margin: 0 0 12px;
 }
 .metric-row {
   display: flex;
   justify-content: space-between;
-  font-size: 12.5px;
+  font-size: 15px;
   padding: 5px 0;
   border-top: 1px solid var(--line);
 }
@@ -218,7 +218,7 @@
   display: inline-block;
   padding: 4px 10px;
   border-radius: 20px;
-  font-size: 11.5px;
+  font-size: 14px;
   font-weight: 600;
   margin-top: 12px;
 }
@@ -243,18 +243,18 @@
   border-top: 1px solid var(--line);
 }
 .allocrow .lbl {
-  font-size: 12px;
+  font-size: 14.5px;
   color: var(--slate);
 }
 .allocrow .qty {
   font-family: "Fraunces", serif;
-  font-size: 20px;
+  font-size: 22.5px;
 }
 .editbtn {
   border: 1px solid var(--line);
   background: #fff;
   color: var(--ink);
-  font-size: 11.5px;
+  font-size: 14px;
   font-weight: 600;
   padding: 5px 10px;
   border-radius: 6px;
@@ -270,7 +270,7 @@
   padding: 7px 8px;
   border: 1px solid var(--line);
   border-radius: 6px;
-  font-size: 13px;
+  font-size: 15.5px;
 }
 .editbox button {
   padding: 7px 10px;
@@ -278,12 +278,12 @@
   border-radius: 6px;
   background: var(--teal);
   color: #fff;
-  font-size: 12px;
+  font-size: 14.5px;
   font-weight: 600;
   cursor: pointer;
 }
 .adjusted-note {
-  font-size: 11px;
+  font-size: 13.5px;
   color: var(--gold-dark);
   margin-top: 6px;
 }
