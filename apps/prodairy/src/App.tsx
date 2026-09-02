@@ -113,11 +113,11 @@ export default function App() {
       <header>
         <img src={logo} alt="Prolife logo" style={{ height: 40, width: "auto", display: "block" }} />
         <div>
-          <p className="eyebrow">PROLIFE · PRODAIRY DASHBOARD</p>
+          <p className="eyebrow">PROLIFE · ADMIN ANALYTICS</p>
           <h1>Weekly performance &amp; allocation</h1>
         </div>
       </header>
-      <p className="sub">Recommended stock allocations from Retinah's weekly analysis — review and adjust before they go out.</p>
+      <p className="sub">Recommended stock allocations from Retinah's weekly analysis. Review and adjust before they go out.</p>
       <div className="banner">Week 2026-W36 · Read-only, except recommended quantities.</div>
 
       <div className="kpis">
@@ -185,10 +185,10 @@ export default function App() {
 
       <div className="chartcard" style={{ marginBottom: 18 }}>
         <h3>Weekly units sold</h3>
-        <p className="cap">Units sold by shop and week — darker means more. Click a row to jump to that shop.</p>
+        <p className="cap">Units sold by shop and week (darker means more). Click a row to jump to that shop.</p>
         <SalesHeatmap metrics={filteredMetrics} onSelectShop={selectShop} selectedRowKey={selectedRowKey} />
       </div>
-      <div className="charts" style={{ gridTemplateColumns: "1fr" }}>
+      <div className="charts">
         <div className="chartcard">
           <h3>Recommended allocation</h3>
           <p className="cap">Pouches for next week, by shop</p>
@@ -218,7 +218,7 @@ export default function App() {
         ))}
       </div>
 
-      <footer>Prolife × ProDairy — dashboard view only. Raw data and model settings are managed in the Retinah workspace.</footer>
+      <footer>Prolife × ProDairy: dashboard view only. Raw data and model settings are managed in the Retinah workspace.</footer>
     </div>
   );
 }

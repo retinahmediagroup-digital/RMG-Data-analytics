@@ -49,7 +49,7 @@ export default function App() {
       <header>
         <img src={logo} alt="Prolife logo" style={{ height: 40, width: "auto", display: "block" }} />
         <div>
-          <p className="eyebrow">RETINAH MEDIA GROUP · PROLIFE WORKSPACE</p>
+          <p className="eyebrow">RMG WORKSPACE</p>
           <h1>Backbone</h1>
         </div>
       </header>
@@ -58,7 +58,7 @@ export default function App() {
         can see. Nothing here is visible to the client.
       </p>
       <div className="banner">
-        <strong>Internal only.</strong> This workspace is never shared — ProDairy gets their own dashboard link with
+        <strong>Internal only.</strong> This workspace is never shared: ProDairy gets their own dashboard link with
         none of this.
       </div>
 
@@ -91,7 +91,7 @@ export default function App() {
         onRemove={(i) => setContactEntries((prev) => prev.filter((_, idx) => idx !== i))}
       />
 
-      <footer>Retinah Media Group — Prolife backbone. This is the only view with raw data, model controls, and client access management.</footer>
+      <footer>RMG Workspace: the only view with raw data, model controls, and client access management.</footer>
     </div>
   );
 }

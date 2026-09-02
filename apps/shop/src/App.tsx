@@ -13,13 +13,13 @@ export default function App() {
       <header>
         <img src={logo} alt="Prolife logo" style={{ height: 40, width: "auto", display: "block" }} />
         <div>
-          <p className="eyebrow">PROLIFE · SHOP APP</p>
+          <p className="eyebrow">PROLIFE · SHOPS DATA ENTRY</p>
           <h1>Weekly data entry</h1>
         </div>
       </header>
       <p className="sub">
-        Submit this week's stock and sales, or register a customer. Entries go straight to Retinah for processing —
-        you'll only ever see this screen.
+        Submit this week's stock and sales, or register a customer. Entries go straight to Retinah for processing,
+        and you'll only ever see this screen.
       </p>
 
       <div className="tabs">
@@ -38,7 +38,7 @@ export default function App() {
         <ContactPanel />
       </div>
 
-      <footer>Prolife Shop App — data stays in this browser tab until it's submitted to Retinah.</footer>
+      <footer>ProDairy Shops Data Entry. Nothing leaves this browser tab until it's submitted to Retinah.</footer>
     </div>
   );
 }

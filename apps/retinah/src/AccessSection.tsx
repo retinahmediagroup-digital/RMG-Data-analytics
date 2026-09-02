@@ -14,7 +14,7 @@ export function AccessSection({ enabled, onChange }: AccessSectionProps) {
         </label>
         <div className="txt">
           <strong>ProDairy dashboard access</strong>
-          <span>Turns their dashboard link on or off — e.g. if a subscription lapses.</span>
+          <span>Turns their dashboard link on or off, e.g. if a subscription lapses.</span>
         </div>
         <span className={`status-pill ${enabled ? "on" : "off"}`}>{enabled ? "Active" : "Paused"}</span>
       </div>

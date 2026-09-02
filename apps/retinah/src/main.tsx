@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <PasswordGate
       password={ACCESS_CODE}
       storageKey="retinah-unlocked"
-      title="Retinah Workspace"
+      title="RMG Workspace"
       description="Internal only. Enter the access code to continue."
       logo={logo}
     >

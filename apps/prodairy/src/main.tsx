@@ -13,7 +13,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
     <PasswordGate
       password={ACCESS_CODE}
       storageKey="prodairy-unlocked"
-      title="ProDairy Dashboard"
+      title="ProDairy Admin Analytics"
       description="Enter the code your Retinah contact gave you to continue."
       logo={logo}
     >

@@ -81,15 +81,15 @@ export function AnalyticsSection({ metrics, overrides, onExport }: AnalyticsSect
           label="Pouches to reallocate"
           value={totalIncrease}
           accent="gold"
-          note={totalIncrease > 0 ? "Sum across Increase-flagged shops" : "None flagged — needs stock-out data to trigger"}
+          note={totalIncrease > 0 ? "Sum across Increase-flagged shops" : "None flagged yet"}
         />
       </div>
       <div className="chartcard" style={{ marginBottom: 16 }}>
         <h3>Weekly units sold</h3>
-        <p className="cap">Units sold by shop and week — darker means more</p>
+        <p className="cap">Units sold by shop and week (darker means more)</p>
         <SalesHeatmap metrics={metrics} />
       </div>
-      <div className="charts" style={{ gridTemplateColumns: "1fr 1fr" }}>
+      <div className="charts">
         <div className="chartcard">
           <h3>Sell-through %</h3>
           <p className="cap">Sold ÷ (opening + received)</p>
