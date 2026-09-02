@@ -9,7 +9,12 @@ const ACCESS_CODE = import.meta.env.VITE_RETINAH_ACCESS_CODE ?? "changeme";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <PasswordGate password={ACCESS_CODE} storageKey="retinah-unlocked" title="Retinah Workspace">
+    <PasswordGate
+      password={ACCESS_CODE}
+      storageKey="retinah-unlocked"
+      title="Retinah Workspace"
+      description="Internal only. Enter the access code to continue."
+    >
       <App />
     </PasswordGate>
   </React.StrictMode>

@@ -9,7 +9,12 @@ const ACCESS_CODE = import.meta.env.VITE_PRODAIRY_ACCESS_CODE ?? "changeme";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
-    <PasswordGate password={ACCESS_CODE} storageKey="prodairy-unlocked" title="ProDairy Dashboard">
+    <PasswordGate
+      password={ACCESS_CODE}
+      storageKey="prodairy-unlocked"
+      title="ProDairy Dashboard"
+      description="Enter the code your Retinah contact gave you to continue."
+    >
       <App />
     </PasswordGate>
   </React.StrictMode>

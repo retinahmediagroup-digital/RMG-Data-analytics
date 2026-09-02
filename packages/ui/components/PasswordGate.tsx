@@ -4,6 +4,7 @@ interface PasswordGateProps {
   password: string;
   storageKey: string;
   title: string;
+  description?: string;
   children: ReactNode;
 }
 
@@ -15,7 +16,13 @@ interface PasswordGateProps {
  * on every request (Supabase Auth + Row-Level Security - see Phase 3 of the
  * build plan); this exists only as a stopgap until that's wired up.
  */
-export function PasswordGate({ password, storageKey, title, children }: PasswordGateProps) {
+export function PasswordGate({
+  password,
+  storageKey,
+  title,
+  description = "Enter the access code to continue.",
+  children,
+}: PasswordGateProps) {
   const [unlocked, setUnlocked] = useState(false);
   const [checked, setChecked] = useState(false);
   const [input, setInput] = useState("");
@@ -44,7 +51,7 @@ export function PasswordGate({ password, storageKey, title, children }: Password
     <div className="gate-wrap">
       <form className="gate-card" onSubmit={submit}>
         <h1>{title}</h1>
-        <p>Internal only. Enter the access code to continue.</p>
+        <p>{description}</p>
         <input
           type="password"
           autoFocus
