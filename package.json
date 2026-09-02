@@ -1,0 +1,23 @@
+{
+  "name": "prolife-monitoring",
+  "private": true,
+  "version": "0.0.0",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
+  "scripts": {
+    "dev:shop": "npm run dev -w apps/shop",
+    "dev:prodairy": "npm run dev -w apps/prodairy",
+    "dev:retinah": "npm run dev -w apps/retinah",
+    "build": "npm run build -w apps/shop && npm run build -w apps/prodairy && npm run build -w apps/retinah",
+    "typecheck": "npm run typecheck -w apps/shop && npm run typecheck -w apps/prodairy && npm run typecheck -w apps/retinah"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
+    "@vitejs/plugin-react": "^4.3.3",
+    "typescript": "^5.6.3",
+    "vite": "^5.4.10"
+  }
+}

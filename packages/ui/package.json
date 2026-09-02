@@ -1,0 +1,10 @@
+{
+  "name": "@prolife/ui",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
+  "peerDependencies": {
+    "chart.js": "^4.4.4",
+    "react": "^18.3.1"
+  }
+}
