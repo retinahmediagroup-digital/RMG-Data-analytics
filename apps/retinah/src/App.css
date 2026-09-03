@@ -81,6 +81,14 @@ section {
   margin: -8px 0 16px;
 }
 
+.product-filter {
+  padding: 8px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 15px;
+  background: #fff;
+  color: var(--ink);
+}
 .kpis {
   display: grid;
   grid-template-columns: repeat(4, 1fr);

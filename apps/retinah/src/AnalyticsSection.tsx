@@ -1,4 +1,4 @@
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import type { ChartConfiguration } from "chart.js/auto";
 import { StatTile } from "@prolife/ui/components/StatTile";
 import { ChartCanvas } from "@prolife/ui/components/ChartCanvas";
@@ -15,28 +15,35 @@ interface AnalyticsSectionProps {
 export function AnalyticsSection({ metrics, overrides, onExport }: AnalyticsSectionProps) {
   const qtyFor = (shop: string, product: string, recommended: number) =>
     overrides[metricsKey(shop, product)] ?? recommended;
-  const multiProduct = useMemo(() => new Set(metrics.map((m) => m.product)).size > 1, [metrics]);
-  const labelFor = (m: ShopMetrics) => (multiProduct ? `${m.shop} · ${m.product}` : m.shop);
 
-  const totalStockouts = metrics.filter((m) => m.avgStockout > 0).length;
-  const totalIncrease = metrics
+  const products = useMemo(() => [...new Set(metrics.map((m) => m.product))], [metrics]);
+  const multiProduct = products.length > 1;
+  const [productFilter, setProductFilter] = useState<string>("All");
+
+  // Every stat and chart below reads off this, not the raw metrics - selecting one
+  // product gives a genuinely isolated view of it (KPIs included), not just a filtered
+  // chart under still-blended headline numbers.
+  const view = useMemo(
+    () => (productFilter === "All" ? metrics : metrics.filter((m) => m.product === productFilter)),
+    [metrics, productFilter]
+  );
+  const labelFor = (m: ShopMetrics) => (multiProduct && productFilter === "All" ? `${m.shop} · ${m.product}` : m.shop);
+
+  const totalStockouts = view.filter((m) => m.avgStockout > 0).length;
+  const totalIncrease = view
     .filter((m) => m.action === "Increase")
     .reduce((a, m) => a + qtyFor(m.shop, m.product, m.recommendedQty), 0);
-  const avgSellThrough = metrics.length
-    ? Math.round(metrics.reduce((a, m) => a + m.sellThrough, 0) / metrics.length)
-    : 0;
+  const avgSellThrough = view.length ? Math.round(view.reduce((a, m) => a + m.sellThrough, 0) / view.length) : 0;
 
-  // Total units sold per week across all shops - a genuine trend read straight off the
-  // editable stock data below, so it moves the moment you add/edit a row.
-  const weeklyTotalSold = (metrics[0]?.weeks ?? []).map((_, i) =>
-    metrics.reduce((a, m) => a + (m.sold[i] ?? 0), 0)
-  );
+  // Total units sold per week across shops in view - a genuine trend read straight off
+  // the editable stock data below, so it moves the moment you add/edit a row.
+  const weeklyTotalSold = (view[0]?.weeks ?? []).map((_, i) => view.reduce((a, m) => a + (m.sold[i] ?? 0), 0));
 
   const sellConfig: ChartConfiguration = {
     type: "bar",
     data: {
-      labels: metrics.map(labelFor),
-      datasets: [{ data: metrics.map((m) => Math.round(m.sellThrough)), backgroundColor: COLORS.purple, borderRadius: 4 }],
+      labels: view.map(labelFor),
+      datasets: [{ data: view.map((m) => Math.round(m.sellThrough)), backgroundColor: COLORS.purple, borderRadius: 4 }],
     },
     options: { responsive: true, plugins: { legend: { display: false } }, scales: { y: { beginAtZero: true, max: 100 } } },
   };
@@ -44,11 +51,11 @@ export function AnalyticsSection({ metrics, overrides, onExport }: AnalyticsSect
   const allocConfig: ChartConfiguration = {
     type: "bar",
     data: {
-      labels: metrics.map(labelFor),
+      labels: view.map(labelFor),
       datasets: [
         {
-          data: metrics.map((m) => qtyFor(m.shop, m.product, m.recommendedQty)),
-          backgroundColor: metrics.map((m) => actionColor(m.action)),
+          data: view.map((m) => qtyFor(m.shop, m.product, m.recommendedQty)),
+          backgroundColor: view.map((m) => actionColor(m.action)),
           borderRadius: 4,
         },
       ],
@@ -60,10 +67,20 @@ export function AnalyticsSection({ metrics, overrides, onExport }: AnalyticsSect
     <section id="analytics">
       <div className="section-title">
         Analytics
-        <button className="exportbtn" onClick={onExport}>Export allocation plan</button>
+        <div className="section-actions">
+          {multiProduct && (
+            <select className="product-filter" value={productFilter} onChange={(e) => setProductFilter(e.target.value)}>
+              <option value="All">All products</option>
+              {products.map((p) => (
+                <option key={p} value={p}>{p}</option>
+              ))}
+            </select>
+          )}
+          <button className="exportbtn" onClick={onExport}>Export allocation plan</button>
+        </div>
       </div>
       <div className="kpis">
-        <StatTile label="Shops reporting" value={metrics.length} accent="ink" note="Rows in the table below" />
+        <StatTile label="Shops reporting" value={view.length} accent="ink" note="Rows in the table below" />
         <StatTile
           label="Avg sell-through"
           value={`${avgSellThrough}%`}
@@ -87,7 +104,7 @@ export function AnalyticsSection({ metrics, overrides, onExport }: AnalyticsSect
       <div className="chartcard" style={{ marginBottom: 16 }}>
         <h3>Weekly units sold</h3>
         <p className="cap">Units sold by shop and week (darker means more)</p>
-        <SalesHeatmap metrics={metrics} />
+        <SalesHeatmap metrics={view} />
       </div>
       <div className="charts">
         <div className="chartcard">
