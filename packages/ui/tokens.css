@@ -265,6 +265,73 @@ footer {
   font-size: 13.5px;
 }
 
+.importbtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 14px;
+  border-radius: 7px;
+  border: 1px solid var(--line);
+  background: #fff;
+  color: var(--ink);
+  font-weight: 600;
+  font-size: 15px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.importbtn:hover {
+  border-color: var(--ink);
+}
+.csv-import {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.csv-import-hint {
+  font-size: 13px;
+  color: var(--slate);
+}
+.csv-import-result {
+  flex-basis: 100%;
+  font-size: 13.5px;
+  color: var(--slate);
+}
+.csv-import-result .ok {
+  color: var(--teal-dark);
+  font-weight: 600;
+}
+.csv-import-result .warn {
+  color: var(--error);
+  font-weight: 600;
+}
+.csv-import-result details {
+  margin-top: 4px;
+}
+.csv-import-result summary {
+  cursor: pointer;
+  color: var(--ink);
+  font-weight: 600;
+}
+.csv-import-result ul {
+  margin: 6px 0 0;
+  padding-left: 18px;
+}
+.csv-import-result li {
+  margin-bottom: 2px;
+}
+.section-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.table-toolbar {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+}
+
 .gate-wrap {
   min-height: 100vh;
   display: flex;

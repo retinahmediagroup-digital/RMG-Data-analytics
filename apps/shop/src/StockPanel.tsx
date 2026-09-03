@@ -1,6 +1,9 @@
 import { useMemo, useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
+import { CsvImport } from "@prolife/ui/components/CsvImport";
 import { loadProducts } from "@prolife/ui/products";
+import { loadShops } from "@prolife/ui/shops";
+import { parseStockCsv } from "@prolife/ui/stockImport";
 import type { StockEntry } from "@prolife/ui/types";
 
 const emptyForm = { shop: "", product: "", week: "", opening: "", received: "", sold: "", closing: "", stockout: "" };
@@ -12,8 +15,9 @@ export function StockPanel() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, boolean>>>({});
   const [editIndex, setEditIndex] = useState(-1);
-  // Retinah owns the catalog (see the RMG workspace's Product catalog section) - the shop
-  // app only ever picks from what's active there, never adds to it.
+  // Retinah owns both catalogs (see the RMG workspace's Shop directory / Product catalog
+  // sections) - the shop app only ever picks from what's active there, never adds to them.
+  const shopNames = useMemo(() => loadShops().filter((s) => s.active).map((s) => s.name), []);
   const productNames = useMemo(() => loadProducts().filter((p) => p.active).map((p) => p.name), []);
 
   function resetForm() {
@@ -121,8 +125,13 @@ export function StockPanel() {
         <p className="hint">One row per shop, per product, per week.</p>
         {isEditing && <div className="editing-flag" style={{ display: "block" }}>Editing an existing entry</div>}
 
-        <Field id="shop" label="Shop" required error={errors.shop} errorMsg="Enter the shop code or name.">
-          <input value={form.shop} onChange={(e) => set("shop", e.target.value)} placeholder="e.g. PD Bindura" />
+        <Field id="shop" label="Shop" required error={errors.shop} errorMsg="Choose a shop.">
+          <select value={form.shop} onChange={(e) => set("shop", e.target.value)}>
+            <option value="">Select…</option>
+            {shopNames.map((name) => (
+              <option key={name}>{name}</option>
+            ))}
+          </select>
         </Field>
         <Field id="product" label="Product" required error={errors.product} errorMsg="Choose a product.">
           <select value={form.product} onChange={(e) => set("product", e.target.value)}>
@@ -168,6 +177,14 @@ export function StockPanel() {
       </div>
 
       <div>
+        <div className="table-toolbar">
+          <CsvImport
+            label="Import CSV"
+            hint="Same columns as Retinah's Export CSV"
+            onParse={(text) => parseStockCsv(text, shopNames, productNames)}
+            onImport={(rows) => setEntries((prev) => [...prev, ...rows])}
+          />
+        </div>
         <div className="tablewrap">
           <table>
             <thead>

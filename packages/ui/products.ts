@@ -1,3 +1,4 @@
+import { newId } from "./id";
 import type { Product } from "./types";
 
 const STORAGE_KEY = "prolife_products_v1";
@@ -7,12 +8,6 @@ const STORAGE_KEY = "prolife_products_v1";
  * (see ProductsSection) is the place new lines get added; this is only the seed.
  */
 export const DEFAULT_PRODUCTS: Product[] = [{ id: "250ml-milk-pouch", name: "250ml Milk Pouch", active: true }];
-
-function newId(): string {
-  return typeof crypto !== "undefined" && "randomUUID" in crypto
-    ? crypto.randomUUID()
-    : `p-${Date.now()}-${Math.random().toString(36).slice(2, 8)}`;
-}
 
 /**
  * Reads this browser's saved catalog, falling back to the shipped defaults the
@@ -41,5 +36,5 @@ export function saveProducts(products: Product[]): void {
 
 export function addProduct(products: Product[], name: string): Product[] {
   const trimmed = name.trim();
-  return [...products, { id: newId(), name: trimmed, active: true }];
+  return [...products, { id: newId("p"), name: trimmed, active: true }];
 }

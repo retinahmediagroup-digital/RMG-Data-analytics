@@ -3,12 +3,14 @@ import logo from "@prolife/ui/assets/logo-life.jpeg";
 import { computeMetrics, DEFAULT_COVER_THRESHOLD_WEEKS, DEFAULT_SAFETY_BUFFER_PCT } from "@prolife/ui/allocation";
 import { downloadCSV } from "@prolife/ui/csv";
 import { addProduct, loadProducts, saveProducts } from "@prolife/ui/products";
+import { addShop, loadShops, saveShops } from "@prolife/ui/shops";
 import { seedContacts, seedStock } from "@prolife/ui/seedData";
-import { metricsKey, type ContactEntry, type Product, type StockEntry } from "@prolife/ui/types";
+import { metricsKey, type ContactEntry, type Product, type Shop, type StockEntry } from "@prolife/ui/types";
 import { AccessSection } from "./AccessSection";
 import { EngineSection } from "./EngineSection";
 import { AnalyticsSection } from "./AnalyticsSection";
 import { ProductsSection } from "./ProductsSection";
+import { ShopsSection } from "./ShopsSection";
 import { StockDataSection } from "./StockDataSection";
 import { ContactDataSection } from "./ContactDataSection";
 
@@ -22,13 +24,23 @@ export default function App() {
   const [stockEntries, setStockEntries] = useState<StockEntry[]>(seedStock);
   const [contactEntries, setContactEntries] = useState<ContactEntry[]>(seedContacts);
   const [products, setProducts] = useState<Product[]>(loadProducts);
+  const [shops, setShops] = useState<Shop[]>(loadShops);
 
   useEffect(() => saveProducts(products), [products]);
+  useEffect(() => saveShops(shops), [shops]);
 
   const productUsage = useMemo(() => {
     const counts: Record<string, number> = {};
     stockEntries.forEach((e) => {
       counts[e.product] = (counts[e.product] ?? 0) + 1;
+    });
+    return counts;
+  }, [stockEntries]);
+
+  const shopUsage = useMemo(() => {
+    const counts: Record<string, number> = {};
+    stockEntries.forEach((e) => {
+      counts[e.shop] = (counts[e.shop] ?? 0) + 1;
     });
     return counts;
   }, [stockEntries]);
@@ -96,6 +108,13 @@ export default function App() {
           onToggleActive={(id) => setProducts((prev) => prev.map((p) => (p.id === id ? { ...p, active: !p.active } : p)))}
           onRemove={(id) => setProducts((prev) => prev.filter((p) => p.id !== id))}
         />
+        <ShopsSection
+          shops={shops}
+          usageCounts={shopUsage}
+          onAdd={(name) => setShops((prev) => addShop(prev, name))}
+          onToggleActive={(id) => setShops((prev) => prev.map((s) => (s.id === id ? { ...s, active: !s.active } : s)))}
+          onRemove={(id) => setShops((prev) => prev.filter((s) => s.id !== id))}
+        />
         <EngineSection
           safetyBufferPct={safetyBufferPct}
           coverThresholdWeeks={coverThresholdWeeks}
@@ -109,13 +128,16 @@ export default function App() {
         <StockDataSection
           entries={stockEntries}
           products={products}
+          shops={shops}
           onAdd={(entry) => setStockEntries((prev) => [...prev, entry])}
+          onImport={(rows) => setStockEntries((prev) => [...prev, ...rows])}
           onUpdate={(i, entry) => setStockEntries((prev) => prev.map((e, idx) => (idx === i ? entry : e)))}
           onRemove={(i) => setStockEntries((prev) => prev.filter((_, idx) => idx !== i))}
         />
         <ContactDataSection
           entries={contactEntries}
           onAdd={(entry) => setContactEntries((prev) => [...prev, entry])}
+          onImport={(rows) => setContactEntries((prev) => [...prev, ...rows])}
           onUpdate={(i, entry) => setContactEntries((prev) => prev.map((e, idx) => (idx === i ? entry : e)))}
           onRemove={(i) => setContactEntries((prev) => prev.filter((_, idx) => idx !== i))}
         />

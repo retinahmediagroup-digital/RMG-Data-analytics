@@ -1,27 +1,33 @@
 import { DEFAULT_PRODUCTS } from "./products";
+import { DEFAULT_SHOPS } from "./shops";
 import type { ContactEntry, StockEntry } from "./types";
 
 const PRODUCT = DEFAULT_PRODUCTS[0].name;
 const WEEK_LABELS = ["2026-W33", "2026-W34", "2026-W35", "2026-W36"];
 
 /** Actual cases sold in August 2026, per shop (from Retinah's shop performance sheet). */
-const REAL_SHOP_AUGUST_CASES: { shop: string; cases: number }[] = [
-  { shop: "PD Bindura", cases: 168 },
-  { shop: "PD Bulawayo", cases: 130 },
-  { shop: "PD Chinhoyi", cases: 194 },
-  { shop: "PD Domboshava", cases: 103 },
-  { shop: "PD Epworth Chiremba", cases: 38 },
-  { shop: "PD Gweru", cases: 90 },
-  { shop: "PD Huruyadzo Chitungwiza", cases: 156 },
-  { shop: "PD Kadoma Rimuka", cases: 183 },
-  { shop: "PD Kuwadzana", cases: 154 },
-  { shop: "PD Kwekwe", cases: 141 },
-  { shop: "PD Machipisa", cases: 256 },
-  { shop: "PD Mbizo", cases: 110 },
-  { shop: "PD Murewa", cases: 52 },
-  { shop: "PD Mutare", cases: 179 },
-  { shop: "PD Norton", cases: 86 },
-];
+const AUGUST_CASES_BY_SHOP: Record<string, number> = {
+  "PD Bindura": 168,
+  "PD Bulawayo": 130,
+  "PD Chinhoyi": 194,
+  "PD Domboshava": 103,
+  "PD Epworth Chiremba": 38,
+  "PD Gweru": 90,
+  "PD Huruyadzo Chitungwiza": 156,
+  "PD Kadoma Rimuka": 183,
+  "PD Kuwadzana": 154,
+  "PD Kwekwe": 141,
+  "PD Machipisa": 256,
+  "PD Mbizo": 110,
+  "PD Murewa": 52,
+  "PD Mutare": 179,
+  "PD Norton": 86,
+};
+
+const REAL_SHOP_AUGUST_CASES: { shop: string; cases: number }[] = DEFAULT_SHOPS.map((s) => ({
+  shop: s.name,
+  cases: AUGUST_CASES_BY_SHOP[s.name],
+}));
 
 /** 250ml x 24 per case = 6L/case, matching the source sheet's Target Litres / Target Cases ratio. */
 const UNITS_PER_CASE = 24;

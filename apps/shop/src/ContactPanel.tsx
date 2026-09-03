@@ -1,7 +1,9 @@
 import { useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
 import { ConsentBadge } from "@prolife/ui/components/ConsentBadge";
+import { CsvImport } from "@prolife/ui/components/CsvImport";
 import { getOrCreateCustomerId } from "@prolife/ui/customerId";
+import { parseContactCsv } from "@prolife/ui/contactImport";
 import type { ContactEntry } from "@prolife/ui/types";
 
 const emptyForm: ContactEntry = {
@@ -160,6 +162,13 @@ export function ContactPanel() {
       </div>
 
       <div>
+        <div className="table-toolbar">
+          <CsvImport
+            label="Import CSV"
+            onParse={parseContactCsv}
+            onImport={(rows) => setEntries((prev) => [...prev, ...rows])}
+          />
+        </div>
         <div className="tablewrap">
           <table>
             <thead>

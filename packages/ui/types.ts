@@ -4,6 +4,12 @@ export interface Product {
   active: boolean;
 }
 
+export interface Shop {
+  id: string;
+  name: string;
+  active: boolean;
+}
+
 export interface StockEntry {
   shop: string;
   product: string;

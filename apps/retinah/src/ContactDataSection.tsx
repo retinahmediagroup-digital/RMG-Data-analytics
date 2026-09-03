@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
 import { ConsentBadge } from "@prolife/ui/components/ConsentBadge";
+import { CsvImport } from "@prolife/ui/components/CsvImport";
 import { getOrCreateCustomerId } from "@prolife/ui/customerId";
 import type { ContactEntry } from "@prolife/ui/types";
 import { downloadCSV } from "@prolife/ui/csv";
+import { parseContactCsv } from "@prolife/ui/contactImport";
 
 const emptyForm: Pick<ContactEntry, "cid" | "name" | "phone" | "channel" | "area" | "consent" | "cdate"> = {
   cid: "",
@@ -19,11 +21,12 @@ type FormState = typeof emptyForm;
 interface ContactDataSectionProps {
   entries: ContactEntry[];
   onAdd: (entry: ContactEntry) => void;
+  onImport: (entries: ContactEntry[]) => void;
   onUpdate: (index: number, entry: ContactEntry) => void;
   onRemove: (index: number) => void;
 }
 
-export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: ContactDataSectionProps) {
+export function ContactDataSection({ entries, onAdd, onImport, onUpdate, onRemove }: ContactDataSectionProps) {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, boolean>>>({});
   const [editIndex, setEditIndex] = useState(-1);
@@ -96,7 +99,10 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
     <section id="contactdata">
       <div className="section-title">
         Customer contacts &amp; consent
-        <button className="exportbtn" onClick={exportConsentedCsv}>Export consented CSV</button>
+        <div className="section-actions">
+          <CsvImport label="Import CSV" onParse={parseContactCsv} onImport={onImport} />
+          <button className="exportbtn" onClick={exportConsentedCsv}>Export consented CSV</button>
+        </div>
       </div>
       <div className="grid">
         <div className="card">

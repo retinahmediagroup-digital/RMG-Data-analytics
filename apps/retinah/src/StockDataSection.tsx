@@ -1,7 +1,9 @@
 import { useMemo, useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
-import type { Product, StockEntry } from "@prolife/ui/types";
+import { CsvImport } from "@prolife/ui/components/CsvImport";
+import type { Product, Shop, StockEntry } from "@prolife/ui/types";
 import { downloadCSV } from "@prolife/ui/csv";
+import { parseStockCsv } from "@prolife/ui/stockImport";
 
 const emptyForm = { shop: "", product: "", week: "", opening: "", received: "", sold: "", closing: "", stockout: "" };
 type FormState = typeof emptyForm;
@@ -10,22 +12,26 @@ type NumericId = "opening" | "received" | "sold" | "closing" | "stockout";
 interface StockDataSectionProps {
   entries: StockEntry[];
   products: Product[];
+  shops: Shop[];
   onAdd: (entry: StockEntry) => void;
+  onImport: (entries: StockEntry[]) => void;
   onUpdate: (index: number, entry: StockEntry) => void;
   onRemove: (index: number) => void;
 }
 
-export function StockDataSection({ entries, products, onAdd, onUpdate, onRemove }: StockDataSectionProps) {
+export function StockDataSection({ entries, products, shops, onAdd, onImport, onUpdate, onRemove }: StockDataSectionProps) {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, boolean>>>({});
   const [editIndex, setEditIndex] = useState(-1);
 
-  // Include the form's current product even if it's since been retired, so editing an
-  // old row never silently blanks its product out from under it.
-  const productOptions = useMemo(() => {
-    const names = products.filter((p) => p.active).map((p) => p.name);
-    return form.product && !names.includes(form.product) ? [...names, form.product] : names;
-  }, [products, form.product]);
+  const activeProductNames = useMemo(() => products.filter((p) => p.active).map((p) => p.name), [products]);
+  const activeShopNames = useMemo(() => shops.filter((s) => s.active).map((s) => s.name), [shops]);
+
+  // Include the form's current shop/product even if it's since been retired, so editing
+  // an old row never silently blanks a field out from under it.
+  const productOptions =
+    form.product && !activeProductNames.includes(form.product) ? [...activeProductNames, form.product] : activeProductNames;
+  const shopOptions = form.shop && !activeShopNames.includes(form.shop) ? [...activeShopNames, form.shop] : activeShopNames;
 
   function resetForm() {
     setForm(emptyForm);
@@ -119,7 +125,15 @@ export function StockDataSection({ entries, products, onAdd, onUpdate, onRemove 
     <section id="stockdata">
       <div className="section-title">
         Stock &amp; sales data
-        <button className="exportbtn" onClick={exportCsv}>Export CSV</button>
+        <div className="section-actions">
+          <CsvImport
+            label="Import CSV"
+            hint="Same columns as Export CSV"
+            onParse={(text) => parseStockCsv(text, activeShopNames, activeProductNames)}
+            onImport={onImport}
+          />
+          <button className="exportbtn" onClick={exportCsv}>Export CSV</button>
+        </div>
       </div>
       <div className="grid">
         <div className="card">
@@ -127,7 +141,12 @@ export function StockDataSection({ entries, products, onAdd, onUpdate, onRemove 
           <p className="hint">Retinah can edit any shop's submission directly.</p>
 
           <Field id="shop" label="Shop" required error={errors.shop} errorMsg="Required.">
-            <input value={form.shop} onChange={(e) => set("shop", e.target.value)} />
+            <select value={form.shop} onChange={(e) => set("shop", e.target.value)}>
+              <option value="">Select…</option>
+              {shopOptions.map((name) => (
+                <option key={name}>{name}</option>
+              ))}
+            </select>
           </Field>
           <Field id="product" label="Product" required error={errors.product} errorMsg="Required.">
             <select value={form.product} onChange={(e) => set("product", e.target.value)}>
@@ -137,9 +156,9 @@ export function StockDataSection({ entries, products, onAdd, onUpdate, onRemove 
               ))}
             </select>
           </Field>
-          {products.every((p) => !p.active) && (
+          {(activeShopNames.length === 0 || activeProductNames.length === 0) && (
             <p className="section-cap" style={{ margin: "-8px 0 12px" }}>
-              No active products in the catalog yet - add one above before recording stock.
+              Add at least one active shop and product to the catalogs above before recording stock.
             </p>
           )}
           <Field id="week" label="Week" required error={errors.week} errorMsg="Required.">
