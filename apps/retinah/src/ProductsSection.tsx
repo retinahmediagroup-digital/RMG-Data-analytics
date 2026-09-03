@@ -43,7 +43,7 @@ export function ProductsSection({ products, usageCounts, onAdd, onToggleActive, 
             setName(e.target.value);
             setError("");
           }}
-          placeholder="e.g. Prolife 500ml Vanilla"
+          placeholder="e.g. 500ml Milk Pouch - Vanilla"
           onKeyDown={(e) => e.key === "Enter" && submit()}
         />
         <button className="addbtn catalog-addbtn" onClick={submit}>

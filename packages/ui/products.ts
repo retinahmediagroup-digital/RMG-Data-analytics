@@ -6,7 +6,7 @@ const STORAGE_KEY = "prolife_products_v1";
  * Shipped with the app so every product list starts populated. Retinah's catalog
  * (see ProductsSection) is the place new lines get added; this is only the seed.
  */
-export const DEFAULT_PRODUCTS: Product[] = [{ id: "prolife-250ml-original", name: "Prolife 250ml Original", active: true }];
+export const DEFAULT_PRODUCTS: Product[] = [{ id: "250ml-milk-pouch", name: "250ml Milk Pouch", active: true }];
 
 function newId(): string {
   return typeof crypto !== "undefined" && "randomUUID" in crypto
