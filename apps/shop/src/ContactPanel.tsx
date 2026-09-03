@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
 import { ConsentBadge } from "@prolife/ui/components/ConsentBadge";
+import { getOrCreateCustomerId } from "@prolife/ui/customerId";
 import type { ContactEntry } from "@prolife/ui/types";
 
 const emptyForm: ContactEntry = {
@@ -9,8 +10,7 @@ const emptyForm: ContactEntry = {
   phone: "",
   email: "",
   channel: "",
-  shop2: "",
-  region: "",
+  area: "",
   ctype: "",
   consent: "",
   cdate: "",
@@ -18,7 +18,7 @@ const emptyForm: ContactEntry = {
   notes: "",
 };
 
-const REQUIRED = ["name", "phone", "channel", "shop2", "consent", "cdate"] as const;
+const REQUIRED = ["name", "phone", "channel", "area", "consent", "cdate"] as const;
 
 export function ContactPanel() {
   const [entries, setEntries] = useState<ContactEntry[]>([]);
@@ -54,7 +54,14 @@ export function ContactPanel() {
     setErrors(newErrors);
     if (!ok) return;
 
-    const entry: ContactEntry = { ...v, name: v.name.trim(), phone: v.phone.trim(), shop2: v.shop2.trim() };
+    const phone = v.phone.trim();
+    const entry: ContactEntry = {
+      ...v,
+      name: v.name.trim(),
+      phone,
+      area: v.area.trim(),
+      cid: editIndex >= 0 ? v.cid : getOrCreateCustomerId(phone),
+    };
     setEntries((prev) => {
       if (editIndex >= 0) {
         const copy = [...prev];
@@ -88,7 +95,7 @@ export function ContactPanel() {
         {isEditing && <div className="editing-flag" style={{ display: "block" }}>Editing an existing entry</div>}
 
         <Field id="cid" label="Customer ID">
-          <input value={form.cid} onChange={(e) => set("cid", e.target.value)} placeholder="Optional" />
+          <input value={form.cid || "Assigned automatically on save"} readOnly disabled />
         </Field>
         <Field id="name" label="Full Name" required error={errors.name} errorMsg="Full name is required.">
           <input value={form.name} onChange={(e) => set("name", e.target.value)} placeholder="e.g. Tendai Moyo" />
@@ -107,14 +114,11 @@ export function ContactPanel() {
               <option>WhatsApp</option>
             </select>
           </Field>
-          <Field id="shop2" label="Nearest Shop" required error={errors.shop2} errorMsg="Enter a shop code or name.">
-            <input value={form.shop2} onChange={(e) => set("shop2", e.target.value)} placeholder="Shop code or name" />
+          <Field id="area" label="Area" required error={errors.area} errorMsg="Enter the area where the customer lives.">
+            <input value={form.area} onChange={(e) => set("area", e.target.value)} placeholder="e.g. Chitungwiza, Mbare" />
           </Field>
         </div>
         <div className="row2">
-          <Field id="region" label="Region">
-            <input value={form.region} onChange={(e) => set("region", e.target.value)} placeholder="Optional" />
-          </Field>
           <Field id="ctype" label="Customer Type">
             <select value={form.ctype} onChange={(e) => set("ctype", e.target.value)}>
               <option value="">Optional</option>
@@ -160,10 +164,11 @@ export function ContactPanel() {
           <table>
             <thead>
               <tr>
+                <th>Customer ID</th>
                 <th>Name</th>
                 <th>Phone</th>
                 <th>Channel</th>
-                <th>Nearest Shop</th>
+                <th>Area</th>
                 <th>Type</th>
                 <th>Consent</th>
                 <th>Consent Date</th>
@@ -173,10 +178,11 @@ export function ContactPanel() {
             <tbody>
               {entries.map((e, i) => (
                 <tr key={i}>
+                  <td>{e.cid}</td>
                   <td className="strong">{e.name}</td>
                   <td>{e.phone}</td>
                   <td>{e.channel}</td>
-                  <td>{e.shop2}</td>
+                  <td>{e.area}</td>
                   <td>{e.ctype || "—"}</td>
                   <td><ConsentBadge consent={e.consent} /></td>
                   <td>{e.cdate}</td>

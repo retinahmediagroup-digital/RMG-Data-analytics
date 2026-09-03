@@ -1,5 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
+import { loadProducts } from "@prolife/ui/products";
 import type { StockEntry } from "@prolife/ui/types";
 
 const emptyForm = { shop: "", product: "", week: "", opening: "", received: "", sold: "", closing: "", stockout: "" };
@@ -11,6 +12,9 @@ export function StockPanel() {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, boolean>>>({});
   const [editIndex, setEditIndex] = useState(-1);
+  // Retinah owns the catalog (see the RMG workspace's Product catalog section) - the shop
+  // app only ever picks from what's active there, never adds to it.
+  const productNames = useMemo(() => loadProducts().filter((p) => p.active).map((p) => p.name), []);
 
   function resetForm() {
     setForm(emptyForm);
@@ -120,8 +124,13 @@ export function StockPanel() {
         <Field id="shop" label="Shop" required error={errors.shop} errorMsg="Enter the shop code or name.">
           <input value={form.shop} onChange={(e) => set("shop", e.target.value)} placeholder="e.g. PD Bindura" />
         </Field>
-        <Field id="product" label="Product" required error={errors.product} errorMsg="Enter the product code or name.">
-          <input value={form.product} onChange={(e) => set("product", e.target.value)} placeholder="e.g. Prolife 250ml Original" />
+        <Field id="product" label="Product" required error={errors.product} errorMsg="Choose a product.">
+          <select value={form.product} onChange={(e) => set("product", e.target.value)}>
+            <option value="">Select…</option>
+            {productNames.map((name) => (
+              <option key={name}>{name}</option>
+            ))}
+          </select>
         </Field>
         <Field id="week" label="Week" required error={errors.week} errorMsg="Use an ISO week code or a date.">
           <input value={form.week} onChange={(e) => set("week", e.target.value)} placeholder="2026-W39" />

@@ -1,6 +1,7 @@
+import { DEFAULT_PRODUCTS } from "./products";
 import type { ContactEntry, StockEntry } from "./types";
 
-const PRODUCT = "Prolife 250ml Original";
+const PRODUCT = DEFAULT_PRODUCTS[0].name;
 const WEEK_LABELS = ["2026-W33", "2026-W34", "2026-W35", "2026-W36"];
 
 /** Actual cases sold in August 2026, per shop (from Retinah's shop performance sheet). */
@@ -57,7 +58,7 @@ function buildStockEntries(): StockEntry[] {
 export const seedStock: StockEntry[] = buildStockEntries();
 
 export const seedContacts: ContactEntry[] = [
-  { name: "Tendai Moyo", phone: "+263 77 123 4567", channel: "WhatsApp", shop2: "PD Bindura", consent: "Yes", cdate: "2026-06-02" },
-  { name: "Rufaro Chikafu", phone: "+263 71 987 6543", channel: "SMS", shop2: "PD Chitungwiza", consent: "Yes", cdate: "2026-06-14" },
-  { name: "Farai Ndlovu", phone: "+263 78 456 1122", channel: "WhatsApp", shop2: "PD Norton", consent: "No", cdate: "2026-07-01" },
+  { cid: "PL-7K2M9X", name: "Tendai Moyo", phone: "+263 77 123 4567", channel: "WhatsApp", area: "Bindura", consent: "Yes", cdate: "2026-06-02" },
+  { cid: "PL-4R8T3Q", name: "Rufaro Chikafu", phone: "+263 71 987 6543", channel: "SMS", area: "Chitungwiza", consent: "Yes", cdate: "2026-06-14" },
+  { cid: "PL-9W5N2H", name: "Farai Ndlovu", phone: "+263 78 456 1122", channel: "WhatsApp", area: "Norton", consent: "No", cdate: "2026-07-01" },
 ];

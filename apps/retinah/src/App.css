@@ -22,25 +22,43 @@
   font-weight: 700;
 }
 
-nav.sections {
+.tabs {
   display: flex;
-  gap: 6px;
-  flex-wrap: wrap;
-  margin-bottom: 26px;
+  gap: 4px;
+  margin: 6px 0 26px;
+  border-bottom: 1px solid var(--line);
 }
-nav.sections a {
-  padding: 8px 14px;
-  border-radius: 20px;
-  border: 1px solid var(--line);
-  background: #fff;
-  color: var(--slate);
-  font-size: 15px;
+.tab {
+  appearance: none;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-size: 17px;
   font-weight: 600;
-  text-decoration: none;
+  color: var(--slate);
+  padding: 10px 4px;
+  margin-right: 26px;
+  position: relative;
+  top: 1px;
 }
-nav.sections a:hover {
-  border-color: var(--purple);
-  color: var(--purple-dark);
+.tab.active {
+  color: var(--ink);
+}
+.tab.active::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--purple);
+  border-radius: 2px;
+}
+.panel {
+  display: none;
+}
+.panel.active {
+  display: block;
 }
 
 section {
@@ -227,6 +245,35 @@ input:checked + .slider:before {
 .status-pill.off {
   background: #f5e7e5;
   color: var(--error);
+}
+
+.catalog-addrow {
+  display: flex;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.catalog-addrow input {
+  flex: 1;
+  padding: 9px 10px;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  font-size: 15.5px;
+  background: #fff;
+  color: var(--ink);
+}
+.catalog-addrow input:focus {
+  outline: none;
+  border-color: var(--purple);
+  box-shadow: 0 0 0 3px rgba(108, 95, 188, 0.15);
+}
+.catalog-addbtn {
+  flex: none;
+  padding: 9px 18px;
+}
+.catalog-error {
+  font-size: 13.5px;
+  color: var(--error);
+  margin: -4px 0 10px;
 }
 
 .card {

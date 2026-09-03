@@ -1,6 +1,6 @@
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
-import type { StockEntry } from "@prolife/ui/types";
+import type { Product, StockEntry } from "@prolife/ui/types";
 import { downloadCSV } from "@prolife/ui/csv";
 
 const emptyForm = { shop: "", product: "", week: "", opening: "", received: "", sold: "", closing: "", stockout: "" };
@@ -9,15 +9,23 @@ type NumericId = "opening" | "received" | "sold" | "closing" | "stockout";
 
 interface StockDataSectionProps {
   entries: StockEntry[];
+  products: Product[];
   onAdd: (entry: StockEntry) => void;
   onUpdate: (index: number, entry: StockEntry) => void;
   onRemove: (index: number) => void;
 }
 
-export function StockDataSection({ entries, onAdd, onUpdate, onRemove }: StockDataSectionProps) {
+export function StockDataSection({ entries, products, onAdd, onUpdate, onRemove }: StockDataSectionProps) {
   const [form, setForm] = useState<FormState>(emptyForm);
   const [errors, setErrors] = useState<Partial<Record<keyof FormState, boolean>>>({});
   const [editIndex, setEditIndex] = useState(-1);
+
+  // Include the form's current product even if it's since been retired, so editing an
+  // old row never silently blanks its product out from under it.
+  const productOptions = useMemo(() => {
+    const names = products.filter((p) => p.active).map((p) => p.name);
+    return form.product && !names.includes(form.product) ? [...names, form.product] : names;
+  }, [products, form.product]);
 
   function resetForm() {
     setForm(emptyForm);
@@ -122,8 +130,18 @@ export function StockDataSection({ entries, onAdd, onUpdate, onRemove }: StockDa
             <input value={form.shop} onChange={(e) => set("shop", e.target.value)} />
           </Field>
           <Field id="product" label="Product" required error={errors.product} errorMsg="Required.">
-            <input value={form.product} onChange={(e) => set("product", e.target.value)} />
+            <select value={form.product} onChange={(e) => set("product", e.target.value)}>
+              <option value="">Select…</option>
+              {productOptions.map((name) => (
+                <option key={name}>{name}</option>
+              ))}
+            </select>
           </Field>
+          {products.every((p) => !p.active) && (
+            <p className="section-cap" style={{ margin: "-8px 0 12px" }}>
+              No active products in the catalog yet - add one above before recording stock.
+            </p>
+          )}
           <Field id="week" label="Week" required error={errors.week} errorMsg="Required.">
             <input value={form.week} onChange={(e) => set("week", e.target.value)} placeholder="2026-W39" />
           </Field>

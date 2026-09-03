@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { Field } from "@prolife/ui/components/Field";
 import { ConsentBadge } from "@prolife/ui/components/ConsentBadge";
+import { getOrCreateCustomerId } from "@prolife/ui/customerId";
 import type { ContactEntry } from "@prolife/ui/types";
 import { downloadCSV } from "@prolife/ui/csv";
 
-const emptyForm: Pick<ContactEntry, "name" | "phone" | "channel" | "shop2" | "consent" | "cdate"> = {
+const emptyForm: Pick<ContactEntry, "cid" | "name" | "phone" | "channel" | "area" | "consent" | "cdate"> = {
+  cid: "",
   name: "",
   phone: "",
   channel: "",
-  shop2: "",
+  area: "",
   consent: "",
   cdate: "",
 };
@@ -41,7 +43,7 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
     const newErrors: Partial<Record<keyof FormState, boolean>> = {};
     let ok = true;
 
-    (["name", "phone", "channel", "shop2", "consent", "cdate"] as const).forEach((id) => {
+    (["name", "phone", "channel", "area", "consent", "cdate"] as const).forEach((id) => {
       const bad = !String(v[id] ?? "").trim();
       newErrors[id] = bad;
       if (bad) ok = false;
@@ -54,7 +56,14 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
     setErrors(newErrors);
     if (!ok) return;
 
-    const entry: ContactEntry = { ...v, name: v.name.trim(), phone: v.phone.trim(), shop2: v.shop2.trim() };
+    const phone = v.phone.trim();
+    const entry: ContactEntry = {
+      ...v,
+      name: v.name.trim(),
+      phone,
+      area: v.area.trim(),
+      cid: editIndex >= 0 ? v.cid : getOrCreateCustomerId(phone),
+    };
     if (editIndex >= 0) onUpdate(editIndex, entry);
     else onAdd(entry);
     resetForm();
@@ -62,7 +71,7 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
 
   function startEdit(i: number) {
     const e = entries[i];
-    setForm({ name: e.name, phone: e.phone, channel: e.channel, shop2: e.shop2, consent: e.consent, cdate: e.cdate });
+    setForm({ cid: e.cid, name: e.name, phone: e.phone, channel: e.channel, area: e.area, consent: e.consent, cdate: e.cdate });
     setEditIndex(i);
     setErrors({});
     document.getElementById("contactdata")?.scrollIntoView({ behavior: "smooth" });
@@ -74,10 +83,10 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
   }
 
   function exportConsentedCsv() {
-    const header = ["Full Name", "Phone Number", "Preferred Channel", "Nearest Shop", "Marketing Consent", "Consent Date"];
+    const header = ["Customer ID", "Full Name", "Phone Number", "Preferred Channel", "Area", "Marketing Consent", "Consent Date"];
     downloadCSV(
       "prolife_customer_contacts_consented.csv",
-      [header, ...entries.filter((e) => e.consent === "Yes").map((e) => [e.name, e.phone, e.channel, e.shop2, e.consent, e.cdate])]
+      [header, ...entries.filter((e) => e.consent === "Yes").map((e) => [e.cid, e.name, e.phone, e.channel, e.area, e.consent, e.cdate])]
     );
   }
 
@@ -94,6 +103,9 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
           <h2>{isEditing ? "Edit customer" : "Add / correct a customer"}</h2>
           <p className="hint">Only rows marked consent Yes are ever exported.</p>
 
+          <Field id="cid" label="Customer ID">
+            <input value={form.cid || "Assigned automatically on save"} readOnly disabled />
+          </Field>
           <Field id="name" label="Full Name" required error={errors.name} errorMsg="Required.">
             <input value={form.name} onChange={(e) => set("name", e.target.value)} />
           </Field>
@@ -108,8 +120,8 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
                 <option>WhatsApp</option>
               </select>
             </Field>
-            <Field id="shop2" label="Nearest Shop" required error={errors.shop2} errorMsg="Required.">
-              <input value={form.shop2} onChange={(e) => set("shop2", e.target.value)} />
+            <Field id="area" label="Area" required error={errors.area} errorMsg="Required.">
+              <input value={form.area} onChange={(e) => set("area", e.target.value)} placeholder="e.g. Chitungwiza, Mbare" />
             </Field>
           </div>
           <div className="row2">
@@ -136,16 +148,17 @@ export function ContactDataSection({ entries, onAdd, onUpdate, onRemove }: Conta
           <table>
             <thead>
               <tr>
-                <th>Name</th><th>Phone</th><th>Channel</th><th>Shop</th><th>Consent</th><th>Date</th><th></th>
+                <th>Customer ID</th><th>Name</th><th>Phone</th><th>Channel</th><th>Area</th><th>Consent</th><th>Date</th><th></th>
               </tr>
             </thead>
             <tbody>
               {entries.map((e, i) => (
                 <tr key={i}>
+                  <td>{e.cid}</td>
                   <td className="strong">{e.name}</td>
                   <td>{e.phone}</td>
                   <td>{e.channel}</td>
-                  <td>{e.shop2}</td>
+                  <td>{e.area}</td>
                   <td><ConsentBadge consent={e.consent} /></td>
                   <td>{e.cdate}</td>
                   <td className="actions">

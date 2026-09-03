@@ -1,3 +1,9 @@
+export interface Product {
+  id: string;
+  name: string;
+  active: boolean;
+}
+
 export interface StockEntry {
   shop: string;
   product: string;
@@ -18,8 +24,7 @@ export interface ContactEntry {
   phone: string;
   email?: string;
   channel: Channel;
-  shop2: string;
-  region?: string;
+  area: string;
   ctype?: string;
   consent: Consent;
   cdate: string;
